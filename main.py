@@ -3,7 +3,7 @@
 #Guillem Bardolet
 
 import numpy as np
-import matplotlib as mpl
+import matplotlib as plt
 
 
 if __name__ == '__main__':
