@@ -1,9 +1,10 @@
+# Importation des fonctions nécessaires pour tester le calcul des transformations
+# géométriques des points.
 from transformation_geometrique import *
 
 def test_calculer_reflexion_point_1(x,y,axe):
 
     print(calculer_reflexion_point(x,y,axe)==(2,-4),'= (2,-4) : calculer_reflexion_point')
-
 
 test_calculer_reflexion_point_1(2,4,'x')
 
