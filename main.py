@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     # Application de transformations (réflexion, rotation, inclinaison) sur les points du clou
     # et visualisation des résultats de ces transformations
-    reflected_points_list, rotated_points_list, inclin_points_list = appliquer_transormation_clou(coords_clou, (0,0), 30, 'x', 20, 'x')
+    reflected_points_list, rotated_points_list, inclin_points_list = appliquer_transformation_clou(coords_clou, (0,0), 30, 'x', 20, 'x')
     visualiser_transformations_clou(reflected_points_list, rotated_points_list, inclin_points_list)
 
     # Chemin des images d'origine et en niveaux de gris
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     path_image_ng = 'image_niveaux_de_gris.jpg'
 
     # Conversion d'une image couleur en niveaux de gris et visualisation des deux images
-    rgb_to_gry(path_image_orig, path_image_ng)
+    appliquer_rgb_to_gry(path_image_orig, path_image_ng)
     visualiser_image_couleur_ng(path_image_orig, path_image_ng)
 
     # Ouverture de l'image en niveaux de gris et conversion en tableau NumPy
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # Application de transformations sur l'image et stockage des résultats
     image_trasf_1 = appliquer_transformation_1(img_array)
-    image_trasf_2 = appliquer_transformation_2(img_array, radius=2)
+    image_trasf_2 = appliquer_transformation_2(img_array, 2)
 
     # Création d'une liste pour stocker les images et les titres correspondants
     images = [img_array, image_trasf_1, image_trasf_2]
@@ -54,6 +54,7 @@ if __name__ == '__main__':
 
     # Redimensionnement et affichage de l'image segmentée
     segmented_image = labels2.reshape(img_array.shape[0] - w + 1, img_array.shape[1] - w + 1)
-    plt.imshow(segmented_image, cmap='gray')
+    plt.imshow(segmented_image, cmap='gray_r')
     plt.title("Image Segmentée")
+    plt.colorbar()
     plt.show()

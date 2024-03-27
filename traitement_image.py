@@ -1,4 +1,6 @@
 # Importation du package Image de la bibliothèque Pillow
+# Importation du package Numpy
+# Importation de la bibliothèque de mathématiques
 from PIL import Image
 import numpy as np
 from math import log10
@@ -32,7 +34,7 @@ def appliquer_rgb_to_gry(chemin_image_couleur, chemin_sauvegarde_gris):
 
             # Calculer la moyenne des composantes R, G, B
             rouge, vert, bleu = couleur_pixel
-            moyenne = round((rouge + vert + bleu) / 3)
+            moyenne = int((rouge + vert + bleu) / 3)
 
             # Remplacer le pixel dans la nouvelle image avec la moyenne en niveaux de gris
             nouvelle_image.putpixel((x, y), moyenne)
@@ -42,6 +44,7 @@ def appliquer_rgb_to_gry(chemin_image_couleur, chemin_sauvegarde_gris):
 
 # Appel de la fonction en passant le chemin de l'image en argument
 #appliquer_rgb_to_gry('image_couleur.jpg', 'image_niveaux_de_gris.jpg')
+
 
 
 """"
@@ -55,15 +58,8 @@ Retourne :
 
 def appliquer_transformation_1(image_gris):
 
-    # Ouverture de l'image et conversion en tableau NumPy pour le traitement
-    #img = Image.open(image_gris).convert('L')
-    img_array = image_gris
-
-    #image = np.array(image_gris)
-    #img_array = image_gris
     # Obtenir les dimensions du tableau
-    nombre_lignes = len(img_array)
-    nombre_colonnes = len(img_array[0])
+    nombre_lignes, nombre_colonnes = image_gris.shape
 
     #initialisation des variables
     tableau_temp = np.zeros((nombre_lignes, nombre_colonnes))
@@ -75,11 +71,11 @@ def appliquer_transformation_1(image_gris):
 
         for j in range(1, nombre_colonnes - 1):
 
-            tableau_temp2 = np.array([[img_array[i - 1][j - 1], img_array[i - 1][j], img_array[i - 1][j + 1]],
-                                      [img_array[i][j - 1], img_array[i][j], img_array[i][j + 1]],
-                                      [img_array[i + 1][j - 1], img_array[i + 1][j], img_array[i + 1][j + 1]]])
+            tableau_temp2 = np.array([[image_gris[i - 1][j - 1], image_gris[i - 1][j], image_gris[i - 1][j + 1]],
+                                      [image_gris[i][j - 1], image_gris[i][j], image_gris[i][j + 1]],
+                                      [image_gris[i + 1][j - 1], image_gris[i + 1][j], image_gris[i + 1][j + 1]]])
 
-            valeur_pixel_central = img_array[i][j]
+            valeur_pixel_central = image_gris[i][j]
 
             if tableau_temp2[0][0] >= valeur_pixel_central:
                 nombre_voisin = 7
@@ -118,11 +114,20 @@ def appliquer_transformation_1(image_gris):
     return tableau_temp
 
 #appliquer_transformation_1('image_gris.jpg')
-
-def appliquer_transformation_2(img_array, rayon):
+"""
+Transformer les données visuelles complexes d’une image en ensembles de caractéristiques plus simples et plus 
+significatives.
+Arguments :
+    image_gris (numpy.ndarray): Un tableau 2D NumPy représentant une image en niveaux de gris.
+    rayon (int): Un entier spécifiant le rayon du voisinage à considérer pour chaque pixel lors de la transformation.
+Retourne :
+    numpy.ndarray: Un tableau 2D NumPy résultant de la transformation appliquée. Cette transformation est basée sur le 
+    rayon spécifié et peut modifier les caractéristiques visuelles originales de l'image.
+"""
+def appliquer_transformation_2(image_gris, rayon):
 
     # Obtenir les dimensions du tableau
-    nombre_lignes, nombre_colonnes = img_array.shape
+    nombre_lignes, nombre_colonnes = image_gris.shape
 
     # initialisation des variables
     tableau_sortie = np.zeros((nombre_lignes, nombre_colonnes))
@@ -131,10 +136,13 @@ def appliquer_transformation_2(img_array, rayon):
 
     for x in range(rayon, nombre_lignes - rayon):
         for y in range(rayon, nombre_colonnes - rayon):
-            tableau_sortie[x, y] += np.log10(1.0 + np.abs(img_array[x, y + rayon] - 2 * img_array[x, y] + img_array[x, y - rayon]))
-            tableau_sortie[x, y] += np.log10(1.0 + np.abs(img_array[x + rayon, y] - 2 * img_array[x, y] + img_array[x - rayon, y]))
+            tableau_sortie[x, y] += np.log10(1.0 + np.abs(image_gris[x, y + rayon] - 2 * image_gris[x, y] +
+                image_gris[x, y - rayon]))
+            tableau_sortie[x, y] += np.log10(1.0 + np.abs(image_gris[x + rayon, y] - 2 * image_gris[x, y] +
+                image_gris[x - rayon, y]))
             tableau_sortie[x, y] += np.log10(
-                1.0 + np.abs(img_array[x - rayon, y + rayon] - 2 * img_array[x, y] + img_array[x + rayon, y- rayon]))
+                1.0 + np.abs(image_gris[x - rayon, y + rayon] - 2 * image_gris[x, y] + image_gris[x + rayon, y- rayon]))
 
     matrice = tableau_sortie.astype(np.int32)
+
     return matrice

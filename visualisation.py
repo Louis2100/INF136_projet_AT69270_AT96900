@@ -3,8 +3,8 @@
 # matplotlib.pyplot est utilisé pour la visualisation graphique.
 from coordonnees_clou import *
 from traitement_image import *
-#from segmentation import *
-#from manupulation_histogramme import *
+from segmentation import *
+from manipulation_histogramme import *
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -106,7 +106,7 @@ def visualiser_transforms_image(path_image_ng, radius=2):
 
 
 
-#def visualiser_seg_image(path_image_ng, radius=2, w=3):
+def visualiser_seg_image(path_image_ng, radius=2, w=3):
     """
     Visualise l'image segmentée après avoir appliqué une transformation et calculé un histogramme.
 
@@ -115,7 +115,7 @@ def visualiser_transforms_image(path_image_ng, radius=2):
     radius (int): Rayon utilisé dans la transformation.
     w (int): Largeur de la fenêtre utilisée pour le calcul de l'histogramme.
     """
-    """"
+
     # Ouverture et traitement de l'image
     img = Image.open(path_image_ng).convert('L')
     img_array = np.array(img)
@@ -127,10 +127,10 @@ def visualiser_transforms_image(path_image_ng, radius=2):
     segmented_image = labels2.reshape(img_array.shape[0] - w + 1, img_array.shape[1] - w + 1)
 
     # Affichage de l'image segmentée
-    plt.imshow(segmented_image, cmap='gray')
+    plt.imshow(segmented_image, cmap='gray_r')
     plt.title("Image Segmentée")
     plt.show()  # Affichage de l'image segmentée
-    """
+
 def visualiser_transformations_clou(*coordonnees_lists):
     """
     Visualise les transformations appliquées sur les coordonnées d'un clou.
@@ -172,4 +172,4 @@ if __name__ == '__main__':
     visualiser_transformations_clou(__REFLECTED_COORD, __ROTATED_COORD, __INCLIN_COORD)
     visualiser_image_couleur_ng(__PATH_IMAGE_ORIG, __PATH_IMAGE_NG)
     visualiser_transforms_image(__PATH_IMAGE_NG)
-    #visualiser_seg_image(__PATH_IMAGE_NG)
+    visualiser_seg_image(__PATH_IMAGE_NG)
